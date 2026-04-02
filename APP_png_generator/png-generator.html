@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNG Image Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="number"],
+        input[type="color"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus,
+        input[type="color"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="color"] {
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .preview-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .preview-section h3 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        #canvas {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #generateBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        #generateBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        #downloadBtn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        #downloadBtn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        #downloadBtn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 PNG Image Generator</h1>
+        
+        <div class="form-group">
+            <label for="imageSize">Image Size (pixels)</label>
+            <input type="number" id="imageSize" value="500" min="50" max="3000" step="10">
+        </div>
+
+        <div class="form-group">
+            <label for="borderThickness">Border Thickness (pixels)</label>
+            <input type="number" id="borderThickness" value="3" min="1" max="20" step="1">
+        </div>
+
+        <div class="form-group">
+            <label for="borderColor">Border Color</label>
+            <input type="color" id="borderColor" value="#FF0000">
+        </div>
+
+        <div class="preview-section">
+            <h3>Preview</h3>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="button-group">
+            <button id="generateBtn">Generate Image</button>
+            <button id="downloadBtn" disabled>Download PNG</button>
+        </div>
+
+        <div class="info">
+            💡 <strong>Tip:</strong> The image will have a colored border around a transparent center. Click "Generate Image" to preview, then "Download PNG" to save.
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const imageSizeInput = document.getElementById('imageSize');
+        const borderThicknessInput = document.getElementById('borderThickness');
+        const borderColorInput = document.getElementById('borderColor');
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let imageGenerated = false;
+
+        function generateImage() {
+            const size = parseInt(imageSizeInput.value);
+            const borderThickness = parseInt(borderThicknessInput.value);
+            const borderColor = borderColorInput.value;
+
+            // Validate inputs
+            if (size < 50 || size > 3000) {
+                alert('Image size must be between 50 and 3000 pixels');
+                return;
+            }
+
+            if (borderThickness < 1 || borderThickness > 200) {
+                alert('Border thickness must be between 1 and 200 pixels');
+                return;
+            }
+
+            if (borderThickness * 2 >= size) {
+                alert('Border thickness is too large for the image size');
+                return;
+            }
+
+            // Set canvas size
+            canvas.width = size;
+            canvas.height = size;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+
+            // Draw border
+            ctx.fillStyle = borderColor;
+            ctx.fillRect(0, 0, size, size);
+
+            // Clear center (transparent)
+            ctx.clearRect(borderThickness, borderThickness, 
+                         size - (borderThickness * 2), 
+                         size - (borderThickness * 2));
+
+            imageGenerated = true;
+            downloadBtn.disabled = false;
+        }
+
+        function downloadImage() {
+            if (!imageGenerated) {
+                alert('Please generate an image first');
+                return;
+            }
+
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const size = parseInt(imageSizeInput.value);
+                const timestamp = new Date().getTime();
+                
+                link.download = `border-image-${size}x${size}-${timestamp}.png`;
+                link.href = url;
+                link.click();
+                
+                // Clean up
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+
+        // Event listeners
+        generateBtn.addEventListener('click', generateImage);
+        downloadBtn.addEventListener('click', downloadImage);
+
+        // Generate initial preview
+        generateImage();
+
+        // Optional: Auto-generate on input change
+        imageSizeInput.addEventListener('input', () => {
+            downloadBtn.disabled = true;
+            imageGenerated = false;
+        });
+
+        borderThicknessInput.addEventListener('input', () => {
+            downloadBtn.disabled = true;
+            imageGenerated = false;
+        });
+
+        borderColorInput.addEventListener('input', () => {
+            downloadBtn.disabled = true;
+            imageGenerated = false;
+        });
+    </script>
+</body>
+</html>

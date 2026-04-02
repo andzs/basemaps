@@ -1,4 +1,6 @@
-# About Openstreet maps usage
+# Solutions to create polygon strings in WKT format (EPSG:3059).
+
+## Openstreet maps usage in polygon-mapper.html
 
 Important: If you're opening the file directly (file:// protocol), you might still get 403 errors because browsers don't send proper Referer headers for local files. In that case, serve it from a simple web server:
 
@@ -11,3 +13,7 @@ Then open in browser:
 <http://localhost:8000/polygon-mapper.html>
 
 This ensures proper HTTP headers are sent to OpenStreetMap's tile servers as per their usage policy. The referrer policy meta tag combined with serving from a web server should fix the 403 error while using the official OpenStreetMap tiles.
+
+## Alternative CartoDB maps
+
+As an alternative you can use polygon-mapper-cartodb.html

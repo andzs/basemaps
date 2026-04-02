@@ -8,6 +8,6 @@ Navigate to the folder containing the HTML file, then run:
 
 Then open in browser:
 
-[http://localhost:8000/polygon-mapper.html]
+<http://localhost:8000/polygon-mapper.html>
 
 This ensures proper HTTP headers are sent to OpenStreetMap's tile servers as per their usage policy. The referrer policy meta tag combined with serving from a web server should fix the 403 error while using the official OpenStreetMap tiles.

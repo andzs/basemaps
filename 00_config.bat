@@ -1,0 +1,28 @@
+:: Parameters
+:: Used for multicore processing where possible
+SET CORES=2
+
+:: Shading parameters
+SET HILLSHADE_EXAGGERATION=4
+:: Controls brightness
+SET HILLSHADE_STDDEV=6
+
+:: For Combined shading
+SET COMBINED_EXAGGERATION=1
+:: Controls brightness
+SET COMBINED_STDDEV=8
+
+:: Contour line parameters
+SET CONTOURS=2.5
+SET FORMLINES=1.25
+SET HELPERLINES=0.625
+
+:: Smoothing parameters for CONTOURS and rest lines. 
+SET CONTOURS_SMOOTHING=5
+SET SMOOTHING=2
+
+:: Defines area used to get rid of necessary data
+SET POLYGON="POLYGON((571560 322213, 572008 322972, 572751 322753, 573749 322613, 574278 322962, 575261 323371, 575341 322937, 575182 322310, 574997 321228, 574960 320892, 574060 320916, 573764 321072, 573504 321085, 573177 320980, 572259 320950, 571715 321502, 571633 321864, 571560 322213))"
+
+:: Tile size in coordinate units for spliting in tiles
+SET TILESIZE=2000

@@ -1,6 +1,10 @@
 # General info
 
-# Tools used
+## What is this ?
+
+This is a collection of scripts put together to automate basemap generation tasks.
+
+## Tools used
 
 OSGeo4W is a binary distribution of a broad set of open source geospatial software for Windows environments (Windows 11 down to 7).
 Install this bundle to get essential tools and python support.
